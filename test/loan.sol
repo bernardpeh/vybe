@@ -16,8 +16,12 @@ contract TestVybeLoan is IVybeBorrower {
   uint256 private _remaining;
   uint256 private _staked;
 
+  event MyAddress(address);
+
   function setupFlashLoan() private {
-    _VYBE = new Vybe();
+    emit MyAddress(address(this));
+
+      _VYBE = new Vybe();
     _stake = new VybeStake(address(_VYBE));
     _VYBE.transferOwnership(address(_stake));
     _loan = new VybeLoan(address(_VYBE), address(_stake));

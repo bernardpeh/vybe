@@ -5,6 +5,7 @@ import "./SafeMath.sol";
 import "./IOwnershipTransferrable.sol";
 import "./ReentrancyGuard.sol";
 import "./Vybe.sol";
+import "@nomiclabs/buidler/console.sol";
 
 contract VybeStake is ReentrancyGuard, Ownable {
   using SafeMath for uint256;
@@ -71,9 +72,9 @@ contract VybeStake is ReentrancyGuard, Ownable {
 
   function increaseStake(uint256 amount) external {
     require(!_dated);
+  require(_VYBE.transferFrom(msg.sender, address(this), amount));
 
-    require(_VYBE.transferFrom(msg.sender, address(this), amount));
-    _totalStaked = _totalStaked.add(amount);
+  _totalStaked = _totalStaked.add(amount);
     _lastClaim[msg.sender] = block.timestamp;
     _staked[msg.sender] = _staked[msg.sender].add(amount);
     emit StakeIncreased(msg.sender, amount);
